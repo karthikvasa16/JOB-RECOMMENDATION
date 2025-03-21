@@ -1,0 +1,16 @@
+Django>=4.0
+requests
+matplotlib
+seaborn
+numpy
+scikit-learn
+nltk
+fitz
+PyMuPDF
+docx2txt
+gunicorn
+celery
+redis
+django-environ
+sqlite3  
+

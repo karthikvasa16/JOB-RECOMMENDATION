@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<h1>Notifications</h1>
+
+{% for notif in notifs %}
+<div >
+    <a href="{% url 'job-listing' %}">
+        <div class="card h-100">
+            <div class="card-body">
+                <p class="card-text"> {{notif.content|safe}} 
+                </p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">{{notif.timestamp|naturaltime}} </small>
+                <a class="btn btn-primary btn-sm" href = "{% url 'delete-notification' notif.pk %}"> Delete </a>
+            </div>
+        </div>
+    </a>
+</div>
+{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<section>
+    <div class="container d-flex align-items-center justify-content-between flex-wrap">
+        <!-- 🎯 Left Section: Job Header -->
+        <div class="p-5 bg-light rounded-3 flex-grow-1">
+            <div class="container-fluid py-4">
+                <h2 class="display-5 fw-bold">AI Job Portal. Get Hired Quickly!</h2>
+                <p class="fs-5 mt-3">
+                    All Available Jobs
+                </p><br><br>
+                <h5>For WebScraping :-</h5>
+                <a href="/scraping">Click Here</a>
+            </div>
+        </div>
+
+        <!-- 🎨 Right Section: Job Graph -->
+        <div class="flex-shrink-0 ms-3" style="width: 350px;">
+            <h5 class="text-center">Job Distribution</h5>
+            <img id="job-graph" src="{% url 'job_graph' %}?location={{ location }}" width="100%" height="250px">
+            <!-- 🎯 Location Selection -->
+<div class="container mt-4">
+    <label for="location"><strong>Select Location:</strong></label>
+    <select id="location" name="location" class="form-control">
+        <option value="">All Locations</option>
+        {% for loc in locations %}
+        <option value="{{ loc }}" {% if loc == location %}selected{% endif %}>{{ loc }}</option>
+        {% endfor %}
+    </select>
+</div>
+        </div>
+    </div>
+</section>
+
+<!-- Recommended Jobs Section -->
+{% if recommended_jobs %}
+<div class="container mt-4">
+    <h3>Jobs that matches your title "{{title}}" :</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for jobs in recommended_jobs %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ jobs.title }}</h5>
+                    <p class="card-text">Job Location: {{ jobs.city }}</p> 
+                    <p class="card-text">Salary: {{ jobs.salary|intcomma }}</p>
+                    <p class="card-text">Posted by: {{ jobs.company }}</p>
+                    <a class="btn btn-primary btn-sm" href="{% url 'job-details' jobs.pk %}">View Details</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Created {{ jobs.timestamp|naturaltime }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<br>
+{% if jobs %}
+<h3>All jobs :</h3>
+<div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+    
+    {% for job in jobs %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ job.title }}</h5>
+                <p class="card-text">Job Location: {{ job.city }}</p>                   
+                <p class="card-text">Salary: {{ job.salary|intcomma }}</p>
+                <p class="card-text">Posted by: {{ job.company }}</p>
+                <a class="btn btn-primary btn-sm" href="{% url 'job-details' job.pk %}"> View Details </a>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Created {{ job.timestamp|naturaltime }}</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+<!-- ✅ JavaScript to Dynamically Update Graph -->
+<script>
+    document.getElementById("location").addEventListener("change", function () {
+        var selectedLocation = this.value;
+        var graphUrl = "{% url 'job_graph' %}?location=" + encodeURIComponent(selectedLocation);
+        document.getElementById("job-graph").src = graphUrl;
+    });
+</script>
+
+{% endblock content %}

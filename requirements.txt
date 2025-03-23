@@ -10,5 +10,5 @@ PyMuPDF
 docx2txt
 gunicorn
 django-environ
-
+django-widget-tweaks
 

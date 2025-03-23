@@ -9,8 +9,6 @@ fitz
 PyMuPDF
 docx2txt
 gunicorn
-celery
-redis
 django-environ
 sqlite3  
 

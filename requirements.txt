@@ -11,4 +11,4 @@ docx2txt
 gunicorn
 django-environ
 django-widget-tweaks
-django-filters
+
